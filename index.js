@@ -18,9 +18,9 @@ const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
+
 client.connect(err => {
   const usersCollection = client.db("volunteerNetwork").collection("users");
-
   app.post('/addUser', (req, res) => {
     const document = req.body;
     usersCollection.insertOne(document)
@@ -44,8 +44,16 @@ client.connect(err => {
     })
   })
 
+});
 
-
+client.connect(err => {
+  const jobsCollection = client.db("volunteerNetwork").collection("jobs");
+  app.get('/allJobs', (req, res)=>{
+    jobsCollection.find({})
+    .toArray((error, documents)=>{
+      res.send(documents)
+    })
+  })
 
 });
 
