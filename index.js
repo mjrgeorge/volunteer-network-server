@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const cors = require('cors')
+const cors = require('cors');
+const { error } = require('console');
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://volunteer-network:volunteerNetwork2020@cluster0.bqmcj.mongodb.net/volunteerNetwork?retryWrites=true&w=majority";
 
@@ -28,6 +29,23 @@ client.connect(err => {
         console.log(result);
       })
   })
+
+  app.get('/allVolunteers', (req, res)=>{
+    usersCollection.find({})
+    .toArray((error, documents)=>{
+      res.send(documents)
+    })
+  })
+
+  app.get('/volunteerTasks', (req, res)=>{
+    usersCollection.find({email: req.query.email})
+    .toArray((error, documents)=>{
+      res.send(documents)
+    })
+  })
+
+
+
 
 });
 
