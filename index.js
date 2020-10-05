@@ -4,6 +4,7 @@ const cors = require('cors');
 const { error } = require('console');
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://volunteer-network:volunteerNetwork2020@cluster0.bqmcj.mongodb.net/volunteerNetwork?retryWrites=true&w=majority";
+const ObjectId = require("mongodb").ObjectId;
 
 const app = express()
 app.use(bodyParser.json())
@@ -41,6 +42,13 @@ client.connect(err => {
     usersCollection.find({email: req.query.email})
     .toArray((error, documents)=>{
       res.send(documents)
+    })
+  })
+
+  app.delete('/delete/:id', (req, res)=>{
+    usersCollection.deleteOne({_id: ObjectId(req.params.id)})
+    .then(result=>{
+      res.send(result.deletedCount>0);
     })
   })
 
