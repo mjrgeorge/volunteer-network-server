@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors');
 const { error } = require('console');
 const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://volunteer-network:volunteerNetwork2020@cluster0.bqmcj.mongodb.net/volunteerNetwork?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bqmcj.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 const ObjectId = require("mongodb").ObjectId;
 
 const app = express()
@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 });
 
 client.connect(err => {
-  const usersCollection = client.db("volunteerNetwork").collection("users");
+  const usersCollection = client.db(`${process.env.DB_NAME}`).collection("users");
   app.post('/addUser', (req, res) => {
     const document = req.body;
     usersCollection.insertOne(document)
@@ -69,6 +69,4 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+app.listen(process.env.PORT || port)
