@@ -65,7 +65,7 @@ client.connect(err => {
 
   app.post('/addEvent', (req, res) => {
     const document = req.body;
-    usersCollection.insertOne(document)
+    jobsCollection.insertOne(document)
       .then(result => {
         res.send(result.insertedCount > 0)
         console.log(result);
