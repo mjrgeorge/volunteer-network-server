@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 });
 
 client.connect(err => {
-  const usersCollection = client.db(`${process.env.DB_NAME}`).collection("users");
+  const usersCollection = client.db("volunteerNetwork").collection("users");
   app.post('/addUser', (req, res) => {
     const document = req.body;
     usersCollection.insertOne(document)
@@ -61,6 +61,15 @@ client.connect(err => {
     .toArray((error, documents)=>{
       res.send(documents)
     })
+  })
+
+  app.post('/addEvent', (req, res) => {
+    const document = req.body;
+    usersCollection.insertOne(document)
+      .then(result => {
+        res.send(result.insertedCount > 0)
+        console.log(result);
+      })
   })
 
 });
